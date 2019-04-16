@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ManualCookScreen"></activity>
+        <activity android:name=".AddScheduleScreen"></activity>
+        <activity android:name=".AddRecipeScreen" />
+        <activity android:name=".ManualCookScreen" />
         <activity android:name=".ScheduleScreen" />
         <activity android:name=".RecipesScreen" />
         <activity android:name=".CookScreen" />
