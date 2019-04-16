@@ -105,6 +105,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@color/colorPrimary"
         android:text="Cook"
         android:textSize="30sp"
         android:textStyle="bold"
