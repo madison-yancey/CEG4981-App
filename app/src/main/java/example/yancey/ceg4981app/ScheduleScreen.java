@@ -25,5 +25,12 @@ public class ScheduleScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //get one (1) schedule
+        //Endpoints.getSchedule("1");
+
+        //get all schedules
     }
 }
+
+

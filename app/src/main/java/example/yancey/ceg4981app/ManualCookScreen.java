@@ -53,7 +53,7 @@ public class ManualCookScreen extends AppCompatActivity {
             public void onClick(View view)
             {
                 String setting = (String) tvSetting2.getText();
-                //set setting to this (probably change to int)
+                //TO DO: set setting to this (probably change to int)
             }
         });
     }
