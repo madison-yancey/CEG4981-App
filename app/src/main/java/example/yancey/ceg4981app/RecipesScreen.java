@@ -39,8 +39,9 @@ public class RecipesScreen extends AppCompatActivity {
         //get one (1) recipe
         JSONObject recipe = Endpoints.getRecipe("1");
         Log.d("Recipe: ", recipe.toString());
+
         //get all recipes
-        JSONObject allRecipes = Endpoints.listRecipe();
+        //JSONObject allRecipes = Endpoints.listRecipe();
 
 
         String s = "{\n" + "\"recipes\": [\n" + "{\n" + "\"body\": \"This is a chicken recipe\",\n" +
