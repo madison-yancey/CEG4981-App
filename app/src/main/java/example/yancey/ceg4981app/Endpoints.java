@@ -37,8 +37,6 @@ public class Endpoints {
         return url;
     }
 
-
-
     //********************SCHEDULE**************************
 
     /**

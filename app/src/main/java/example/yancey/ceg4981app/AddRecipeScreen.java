@@ -57,6 +57,7 @@ public class AddRecipeScreen extends AppCompatActivity {
                 //if value = 1, ask before they leave
                 if(value == 1){
                     //TO DO: ask before leaving
+
                 }
                 //if value = 0, just go back
                 if (value == 0) {

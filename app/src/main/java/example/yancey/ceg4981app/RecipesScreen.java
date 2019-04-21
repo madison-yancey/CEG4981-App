@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
+import android.util.Log;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RecipesScreen extends AppCompatActivity {
@@ -36,13 +38,26 @@ public class RecipesScreen extends AppCompatActivity {
 
         //get one (1) recipe
         JSONObject recipe = Endpoints.getRecipe("1");
-
+        Log.d("Recipe: ", recipe.toString());
         //get all recipes
         JSONObject allRecipes = Endpoints.listRecipe();
 
-        //array
 
-        //then parse array
+        String s = "{\n" + "\"recipes\": [\n" + "{\n" + "\"body\": \"This is a chicken recipe\",\n" +
+                "\"date_created\": \"Thu, 18 Apr 2019 14:43:14 GMT\",\n" +"\"id\": 1,\n" +"\"name\": \"Chicken\"\n" +"}\n" +"]\n" +"}\n";
+
+        JSONObject obj = null;
+        JSONArray obj2 = null;
+        JSONObject date_created = null;
+
+        try {
+            obj = new JSONObject(s);
+            obj2 = obj.getJSONArray("recipes");
+            date_created = obj2.getJSONObject(0);
+            date_created.getString("date_created");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 }
