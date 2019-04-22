@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +21,7 @@ public class RecipesScreen extends AppCompatActivity {
         setContentView(R.layout.recipes_screen);
 
         Button btnAddRecipe = findViewById(R.id.btnAddRecipe);
+        LinearLayout layout = findViewById(R.id.layout);
 
         final Intent intent = new Intent(this, AddRecipeScreen.class);
 
@@ -37,28 +41,42 @@ public class RecipesScreen extends AppCompatActivity {
         });
 
         //get one (1) recipe
-        JSONObject recipe = Endpoints.getRecipe("1");
-        Log.d("Recipe: ", recipe.toString());
+        //JSONObject recipe = Endpoints.getRecipe("1");
+        //Log.d("Recipe: ", recipe.toString());
 
         //get all recipes
-        //JSONObject allRecipes = Endpoints.listRecipe();
+        JSONObject allRecipes = null;
+        try{
+            allRecipes = Endpoints.listRecipe();
+        } catch(Exception e) {
+            Log.d("GET all recipes", allRecipes.toString());
+        }
 
+//        String s = "{\n" + "\"recipes\": [\n" + "{\n" + "\"body\": \"This is a chicken recipe\",\n" +
+//                "\"date_created\": \"Thu, 18 Apr 2019 14:43:14 GMT\",\n" +"\"id\": 1,\n" +"\"name\": \"Chicken\"\n" +"}\n" +"]\n" +"}\n";
 
-        String s = "{\n" + "\"recipes\": [\n" + "{\n" + "\"body\": \"This is a chicken recipe\",\n" +
-                "\"date_created\": \"Thu, 18 Apr 2019 14:43:14 GMT\",\n" +"\"id\": 1,\n" +"\"name\": \"Chicken\"\n" +"}\n" +"]\n" +"}\n";
+        JSONArray obj2;
+        JSONObject obj3;
 
-        JSONObject obj = null;
-        JSONArray obj2 = null;
-        JSONObject date_created = null;
+        String name;
+        String body;
 
         try {
-            obj = new JSONObject(s);
-            obj2 = obj.getJSONArray("recipes");
-            date_created = obj2.getJSONObject(0);
-            date_created.getString("date_created");
+            //FOR ARRAY:
+            obj2 = allRecipes.getJSONArray("recipes");
+
+            for(int i = 0; i < obj2.length(); i++){
+                obj3 = obj2.getJSONObject(0);
+                name = obj3.getString("name");
+                body = obj3.getString("body");
+
+                TextView txtRecipe = new TextView(this);
+                txtRecipe.setText("Recipe: " + name + " Description: " + body);
+                layout.addView(txtRecipe);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 }

@@ -18,6 +18,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import android.util.Log;
 
 public class Endpoints {
 
@@ -214,7 +215,7 @@ public class Endpoints {
 
         OkHttpClient client = new OkHttpClient();
         String localURL = url + "getRecipe?recipeId=" + recipeId;
-
+        Log.d("Recipe URL:", localURL);
         // Form request
         Request request = new Request.Builder()
                 .url(localURL)
@@ -226,7 +227,7 @@ public class Endpoints {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                System.out.println("Failed request");
+                System.out.println("Recipe: Failed request");
                 e.printStackTrace();
                 countDownLatch.countDown();
             }
