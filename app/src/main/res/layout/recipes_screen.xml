@@ -49,16 +49,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="140dp"
         android:layout_marginBottom="8dp"
         android:background="@color/colorPrimary"
-        android:text="Add Recipe"
+        android:text="Add"
         android:textColor="@android:color/background_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.729"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/btnRefreshRecipes"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0.619" />
 
     <Button
         android:id="@+id/btnRefreshRecipes"
@@ -73,8 +74,43 @@
         android:textColor="@android:color/background_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.28"
+        app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0.619" />
+
+    <Button
+        android:id="@+id/btnEditRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorPrimary"
+        android:text="Edit"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintStart_toEndOf="@+id/btnAddRecipe"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0.111" />
+
+    <Button
+        android:id="@+id/btnDeleteRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorPrimary"
+        android:text="Delete"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/btnEditRecipe"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0.619" />
 
 </android.support.constraint.ConstraintLayout>

@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="208dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="---"
@@ -22,24 +22,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/tvSettingLabel2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.37" />
 
     <TextView
         android:id="@+id/tvSettingLabel2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="208dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Current Setting:"
         android:textColor="@android:color/black"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnHigh"
+        app:layout_constraintBottom_toTopOf="@+id/btnLow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.219"
+        app:layout_constraintHorizontal_bias="0.262"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.626" />
 
     <Button
         android:id="@+id/btnCookManual"
@@ -70,30 +72,30 @@
         android:background="@color/colorPrimary"
         android:text="Low"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnCookManual"
+        app:layout_constraintBottom_toTopOf="@+id/btnHigh"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.029"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.731" />
+        app:layout_constraintVertical_bias="0.807" />
 
     <Button
         android:id="@+id/btnHigh"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="340dp"
+        android:layout_marginEnd="144dp"
         android:layout_marginBottom="8dp"
         android:background="@color/colorPrimary"
         android:text="High"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnCookManual"
+        app:layout_constraintBottom_toTopOf="@+id/btnWarm"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/btnLow"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.731" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btnWarm"
@@ -101,15 +103,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="144dp"
         android:layout_marginBottom="8dp"
         android:background="@color/colorPrimary"
         android:text="Warm"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/btnCookManual"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/btnHigh"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.733" />
+        app:layout_constraintVertical_bias="0.833" />
 </android.support.constraint.ConstraintLayout>

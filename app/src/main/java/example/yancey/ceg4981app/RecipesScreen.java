@@ -55,7 +55,7 @@ public class RecipesScreen extends AppCompatActivity {
 //        String s = "{\n" + "\"recipes\": [\n" + "{\n" + "\"body\": \"This is a chicken recipe\",\n" +
 //                "\"date_created\": \"Thu, 18 Apr 2019 14:43:14 GMT\",\n" +"\"id\": 1,\n" +"\"name\": \"Chicken\"\n" +"}\n" +"]\n" +"}\n";
 
-        JSONArray obj2;
+        JSONArray obj2 = new JSONArray();
         JSONObject obj3;
 
         String name;
@@ -63,10 +63,11 @@ public class RecipesScreen extends AppCompatActivity {
 
         try {
             //FOR ARRAY:
-            obj2 = allRecipes.getJSONArray("recipes");
+            obj2.put(allRecipes);
+            //obj2 = allRecipes.put("recipes");
 
             for(int i = 0; i < obj2.length(); i++){
-                obj3 = obj2.getJSONObject(0);
+                obj3 = obj2.getJSONObject(i);
                 name = obj3.getString("name");
                 body = obj3.getString("body");
 
@@ -74,7 +75,6 @@ public class RecipesScreen extends AppCompatActivity {
                 txtRecipe.setText("Recipe: " + name + " Description: " + body);
                 layout.addView(txtRecipe);
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
