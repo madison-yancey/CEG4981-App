@@ -25,7 +25,7 @@ public class Endpoints {
 
     private static String url = "http://10.16.34.11:5000/";
     private static JSONObject jsonResponse;
-    private static JSONArray jsonArrayResponse;
+    private static String stringResponse;
     private static CountDownLatch countDownLatch;
 
     private Endpoints() {
@@ -208,7 +208,7 @@ public class Endpoints {
      * On failure the response will be a null jSON object
      */
 
-    public static JSONObject getTemp() {
+    public static String getTemp() {
 
         OkHttpClient client = new OkHttpClient();
         String localURL = url + "getTemp";
@@ -235,7 +235,8 @@ public class Endpoints {
                     throw new IOException("Unexpected code " + response);
                 } else {
                     try {
-                        System.out.print(response.body().string());
+                        //jsonResponse = new JSONObject(response.body().string());
+                        stringResponse = response.body().string();
                     } catch (Exception e) {
                         System.out.println("Failed to get JSON");
                         e.printStackTrace();
@@ -251,7 +252,7 @@ public class Endpoints {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return jsonResponse;
+        return stringResponse;
     }
 
 
@@ -317,10 +318,10 @@ public class Endpoints {
      * On failure the response will be a null jSON object
      */
 
-    public static JSONArray listSchedule() {
+    public static JSONObject listSchedule() {
 
         OkHttpClient client = new OkHttpClient();
-        String localURL = url;
+        String localURL = url + "listSchedule";
 
         // Form request
         Request request = new Request.Builder()
@@ -344,7 +345,7 @@ public class Endpoints {
                     throw new IOException("Unexpected code " + response);
                 } else {
                     try {
-                        jsonArrayResponse = new JSONArray(response.body().string());
+                        jsonResponse = new JSONObject(response.body().string());
                     } catch (JSONException e) {
                         System.out.println("Failed to get JSON");
                         e.printStackTrace();
@@ -360,7 +361,7 @@ public class Endpoints {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return jsonArrayResponse;
+        return jsonResponse;
 
     }
 
@@ -591,10 +592,10 @@ public class Endpoints {
      * On success the response will be a JSON object with the recipes
      * On failure the response will be a null jSON object */
 
-    public static JSONArray listRecipe() {
+    public static JSONObject listRecipe() {
 
         OkHttpClient client = new OkHttpClient();
-        String localURL = url;
+        String localURL = url + "listRecipe";
 
         // Form request
         Request request = new Request.Builder()
@@ -618,7 +619,7 @@ public class Endpoints {
                     throw new IOException("Unexpected code " + response);
                 } else {
                     try {
-                        jsonArrayResponse = new JSONArray(response.body().string());
+                        jsonResponse = new JSONObject(response.body().string());
                     } catch (JSONException e) {
                         System.out.println("Failed to get JSON");
                         e.printStackTrace();
@@ -634,7 +635,7 @@ public class Endpoints {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return jsonArrayResponse;
+        return jsonResponse;
 
     }
 

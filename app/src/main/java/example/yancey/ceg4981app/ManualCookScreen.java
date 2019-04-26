@@ -13,6 +13,7 @@ public class ManualCookScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manual_cook_screen);
 
+        Button btnOff = findViewById(R.id.btnOff);
         Button btnLow = findViewById(R.id.btnLow);
         Button btnHigh = findViewById(R.id.btnHigh);
         Button btnWarm = findViewById(R.id.btnWarm);

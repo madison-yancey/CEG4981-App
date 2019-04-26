@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 public class HomeScreen extends AppCompatActivity {
 
     @Override
@@ -22,6 +24,10 @@ public class HomeScreen extends AppCompatActivity {
 
         //TO DO: When screen opens (or refreshes), redisplay the temperature, setting, and
         // if a schedule is being used
+
+        String temp = Endpoints.getTemp();     //prints temperature in Endpoints
+        temp = temp.trim();
+        tvTemp.setText(temp + " °F");
 
         final Intent intent = new Intent(this, CookScreen.class);
         intent.putExtra("Thing to do", "Go to cook screen");
