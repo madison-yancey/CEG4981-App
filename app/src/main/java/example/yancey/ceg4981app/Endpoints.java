@@ -1,5 +1,6 @@
 package example.yancey.ceg4981app;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.concurrent.CountDownLatch;
 
@@ -24,6 +25,7 @@ public class Endpoints {
 
     private static String url = "http://10.16.34.11:5000/";
     private static JSONObject jsonResponse;
+    private static JSONArray jsonArrayResponse;
     private static CountDownLatch countDownLatch;
 
     private Endpoints() {
@@ -315,7 +317,7 @@ public class Endpoints {
      * On failure the response will be a null jSON object
      */
 
-    public static JSONObject listSchedule() {
+    public static JSONArray listSchedule() {
 
         OkHttpClient client = new OkHttpClient();
         String localURL = url;
@@ -342,7 +344,7 @@ public class Endpoints {
                     throw new IOException("Unexpected code " + response);
                 } else {
                     try {
-                        jsonResponse = new JSONObject(response.body().string());
+                        jsonArrayResponse = new JSONArray(response.body().string());
                     } catch (JSONException e) {
                         System.out.println("Failed to get JSON");
                         e.printStackTrace();
@@ -358,10 +360,9 @@ public class Endpoints {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return jsonResponse;
+        return jsonArrayResponse;
 
     }
-
 
     /**
      * Create schedule POST
@@ -421,7 +422,7 @@ public class Endpoints {
     }
 
     /**
-     * Create schedule POST
+     * Update schedule POST
      *
      */
     public static JSONObject updateSchedule(int scheduleId, String body, String name, int time, String setting){
@@ -590,7 +591,7 @@ public class Endpoints {
      * On success the response will be a JSON object with the recipes
      * On failure the response will be a null jSON object */
 
-    public static JSONObject listRecipe() {
+    public static JSONArray listRecipe() {
 
         OkHttpClient client = new OkHttpClient();
         String localURL = url;
@@ -603,6 +604,61 @@ public class Endpoints {
         clearPreviousEndpointContext();
         // this is here to await the end of the call so that way we don't do anything until request comes back
         // async call because sync call causes exception
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("Failed request");
+                e.printStackTrace();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    try {
+                        jsonArrayResponse = new JSONArray(response.body().string());
+                    } catch (JSONException e) {
+                        System.out.println("Failed to get JSON");
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(jsonResponse);
+                countDownLatch.countDown();
+            }
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return jsonArrayResponse;
+
+    }
+
+    /**
+     * Create recipe POST
+     *
+     */
+    public static JSONObject createRecipe(String body, String name){
+        OkHttpClient client = new OkHttpClient();
+        String localURL = url;
+
+        clearPreviousEndpointContext();
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("body", body)
+                .addFormDataPart("name", name)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(localURL + "createRecipe")
+                .post(requestBody)
+                .build();
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -637,7 +693,60 @@ public class Endpoints {
 
     }
 
-    //TO DO: create recipe
+    /**
+     * Update recipe POST
+     *
+     */
+    public static JSONObject updateRecipe(int recipeId, String body, String name){
+        OkHttpClient client = new OkHttpClient();
+        String localURL = url;
+
+        clearPreviousEndpointContext();
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("recipeId", Integer.toString(recipeId))
+                .addFormDataPart("body", body)
+                .addFormDataPart("name", name)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(localURL + "updateRecipe")
+                .put(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("Failed request");
+                e.printStackTrace();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    try {
+                        jsonResponse = new JSONObject(response.body().string());
+                    } catch (JSONException e) {
+                        System.out.println("Failed to get JSON");
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(jsonResponse);
+                countDownLatch.countDown();
+            }
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return jsonResponse;
+    }
 
      /**
      * Sends a DELETE request to the server to delete an Recipe .
@@ -649,7 +758,7 @@ public class Endpoints {
 
     public static JSONObject deleteRecipe(int recipeId){
         OkHttpClient client = new OkHttpClient();
-        String localURL = url + "recipeId?recipeId=" + recipeId;
+        String localURL = url + "deleteRecipe" + "?recipeId=" + recipeId;
 
         // Form request
         Request request = new Request.Builder()

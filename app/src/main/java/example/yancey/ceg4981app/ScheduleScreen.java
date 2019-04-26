@@ -33,7 +33,7 @@ public class ScheduleScreen extends AppCompatActivity {
         // Endpoints.updateSchedule(8, "update", "updatedTestSchedule", 12000, "2");
         // Endpoints.deleteSchedule(8);
         // Endpoints.getTemp();     prints temperature in Endpoints
-        
+
         //0 - Off
         //1 - Warm
         //2 - Low
@@ -45,5 +45,3 @@ public class ScheduleScreen extends AppCompatActivity {
         //get all schedules
     }
 }
-
-
