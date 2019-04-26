@@ -3,8 +3,11 @@ package example.yancey.ceg4981app;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import org.json.JSONObject;
 
 public class ScheduleScreen extends AppCompatActivity {
 
@@ -25,6 +28,16 @@ public class ScheduleScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Endpoints.createSchedule("test", "testSchedule", 120, "1");
+        // Endpoints.updateSchedule(8, "update", "updatedTestSchedule", 12000, "2");
+        // Endpoints.deleteSchedule(8);
+        // Endpoints.getTemp();     prints temperature in Endpoints
+        
+        //0 - Off
+        //1 - Warm
+        //2 - Low
+        //3 - High
 
         //get one (1) schedule
         //Endpoints.getSchedule("1");

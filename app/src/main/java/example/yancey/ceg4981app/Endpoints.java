@@ -38,6 +38,221 @@ public class Endpoints {
         return url;
     }
 
+    //********************COOkING**************************
+    /**
+     * Start schedule POST
+     *
+     */
+    public static JSONObject startSchedule(int scheduleId){
+        OkHttpClient client = new OkHttpClient();
+        String localURL = url;
+
+        clearPreviousEndpointContext();
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("scheduleId", Integer.toString(scheduleId))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(localURL + "startSchedule")
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("Failed request");
+                e.printStackTrace();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    try {
+                        jsonResponse = new JSONObject(response.body().string());
+                    } catch (JSONException e) {
+                        System.out.println("Failed to get JSON");
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(jsonResponse);
+                countDownLatch.countDown();
+            }
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return jsonResponse;
+
+    }
+
+    /**
+     * Stop schedule POST
+     *
+     */
+    public static JSONObject stopSchedule(){
+        OkHttpClient client = new OkHttpClient();
+        String localURL = url;
+
+        clearPreviousEndpointContext();
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                //.addFormDataPart("scheduleId", Integer.toString(scheduleId))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(localURL + "stopSchedule")
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("Failed request");
+                e.printStackTrace();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    try {
+                        jsonResponse = new JSONObject(response.body().string());
+                    } catch (JSONException e) {
+                        System.out.println("Failed to get JSON");
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(jsonResponse);
+                countDownLatch.countDown();
+            }
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return jsonResponse;
+
+    }
+
+    /**
+     * Set cooking setting POST
+     *
+     */
+    public static JSONObject setCookSetting(String cooking_setting){
+        OkHttpClient client = new OkHttpClient();
+        String localURL = url;
+
+        clearPreviousEndpointContext();
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("cooking_setting", cooking_setting)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(localURL + "setCookSetting")
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("Failed request");
+                e.printStackTrace();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    try {
+                        jsonResponse = new JSONObject(response.body().string());
+                    } catch (JSONException e) {
+                        System.out.println("Failed to get JSON");
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(jsonResponse);
+                countDownLatch.countDown();
+            }
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return jsonResponse;
+    }
+
+    /**
+     * This will GET the temperature from the server.
+     * On success the response will be a JSON object with the schedule
+     * On failure the response will be a null jSON object
+     */
+
+    public static JSONObject getTemp() {
+
+        OkHttpClient client = new OkHttpClient();
+        String localURL = url + "getTemp";
+
+        // Form request
+        Request request = new Request.Builder()
+                .url(localURL)
+                .build();
+
+        clearPreviousEndpointContext();
+        // this is here to await the end of the call so that way we don't do anything until request comes back
+        // async call because sync call causes exception
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("Failed request");
+                e.printStackTrace();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    try {
+                        System.out.print(response.body().string());
+                    } catch (Exception e) {
+                        System.out.println("Failed to get JSON");
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(jsonResponse);
+                countDownLatch.countDown();
+            }
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return jsonResponse;
+    }
+
+
     //********************SCHEDULE**************************
 
     /**
@@ -148,7 +363,119 @@ public class Endpoints {
     }
 
 
-    //TO DO: create schedule
+    /**
+     * Create schedule POST
+     *
+     */
+    public static JSONObject createSchedule(String body, String name, int time, String setting){
+        OkHttpClient client = new OkHttpClient();
+        String localURL = url;
+
+        clearPreviousEndpointContext();
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("body", body)
+                .addFormDataPart("name", name)
+                .addFormDataPart("time", Integer.toString(time))
+                .addFormDataPart("setting", setting)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(localURL + "createSchedule")
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("Failed request");
+                e.printStackTrace();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    try {
+                        jsonResponse = new JSONObject(response.body().string());
+                    } catch (JSONException e) {
+                        System.out.println("Failed to get JSON");
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(jsonResponse);
+                countDownLatch.countDown();
+            }
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return jsonResponse;
+
+    }
+
+    /**
+     * Create schedule POST
+     *
+     */
+    public static JSONObject updateSchedule(int scheduleId, String body, String name, int time, String setting){
+        OkHttpClient client = new OkHttpClient();
+        String localURL = url;
+
+        clearPreviousEndpointContext();
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("scheduleId", Integer.toString(scheduleId))
+                .addFormDataPart("body", body)
+                .addFormDataPart("name", name)
+                .addFormDataPart("time", Integer.toString(time))
+                .addFormDataPart("setting", setting)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(localURL + "updateSchedule")
+                .put(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("Failed request");
+                e.printStackTrace();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    try {
+                        jsonResponse = new JSONObject(response.body().string());
+                    } catch (JSONException e) {
+                        System.out.println("Failed to get JSON");
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(jsonResponse);
+                countDownLatch.countDown();
+            }
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return jsonResponse;
+    }
 
     /**
      * Sends a DELETE request to the server to delete an Schedule .
@@ -159,7 +486,7 @@ public class Endpoints {
      */
     public static JSONObject deleteSchedule(int scheduleId){
         OkHttpClient client = new OkHttpClient();
-        String localURL = url + "scheduleId?scheduleId=" + scheduleId;
+        String localURL = url + "deleteSchedule" + "?scheduleId=" + scheduleId;
 
         // Form request
         Request request = new Request.Builder()
@@ -199,6 +526,7 @@ public class Endpoints {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("RESPONSE: " + jsonResponse);
         return jsonResponse;
     }
 
