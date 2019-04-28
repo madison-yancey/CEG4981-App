@@ -41,23 +41,24 @@ public class Endpoints {
     }
 
     //********************COOkING**************************
+
     /**
      * Start schedule POST
      *
      */
-    public static JSONObject startSchedule(int scheduleId){
+    public static JSONObject startSchedule(String scheduleId){
         OkHttpClient client = new OkHttpClient();
-        String localURL = url;
+        String localURL = url + "startSchedule?scheduleId=" + scheduleId;
 
         clearPreviousEndpointContext();
 
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("scheduleId", Integer.toString(scheduleId))
+                .addFormDataPart("scheduleId", scheduleId)
                 .build();
 
         Request request = new Request.Builder()
-                .url(localURL + "startSchedule")
+                .url(localURL)
                 .post(requestBody)
                 .build();
 
@@ -92,7 +93,6 @@ public class Endpoints {
             e.printStackTrace();
         }
         return jsonResponse;
-
     }
 
     /**
@@ -107,7 +107,7 @@ public class Endpoints {
 
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                //.addFormDataPart("scheduleId", Integer.toString(scheduleId))
+                .addFormDataPart("scheduleId", "0")
                 .build();
 
         Request request = new Request.Builder()

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ManualCookScreen extends AppCompatActivity {
 
@@ -19,6 +21,7 @@ public class ManualCookScreen extends AppCompatActivity {
         Button btnHigh = findViewById(R.id.btnHigh);
         Button btnWarm = findViewById(R.id.btnWarm);
         Button btnCookManual = findViewById(R.id.btnCookManual);
+        final CheckBox chkSchedule = findViewById(R.id.chkSchedule);
         final TextView tvSetting2 = findViewById(R.id.tvSetting2);
 
         //TO DO: only change setting when someone hits cook
@@ -69,19 +72,33 @@ public class ManualCookScreen extends AppCompatActivity {
                     numericalSetting = "2";
                 }else if(setting == "Warm"){
                     numericalSetting = "1";
-                } else if(setting == "High"){
+                }else if(setting == "High"){
                     numericalSetting = "3";
-                } else{
+                }else{
                     numericalSetting = "0";
                 }
-                //CHECK IF SCHEDULE NEEDS STOPPED
 
-                Log.d("Setting", numericalSetting);
-                Endpoints.setCookSetting(numericalSetting);
-                //TO DO: set setting to this (probably change to int)
+                //CHECK IF SCHEDULE NEEDS STOPPED
+                try {
+                    Endpoints.stopSchedule();
+                    //chkSchedule.setChecked(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    Endpoints.setCookSetting(numericalSetting);
+                    Toast.makeText(getApplicationContext(), "Setting Updated", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-
-        //STOP schedule then set cook setting
     }
 }
