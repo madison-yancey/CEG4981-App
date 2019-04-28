@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AddRecipeScreen extends AppCompatActivity {
 
@@ -18,12 +19,6 @@ public class AddRecipeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_recipe_screen);
 
-        Bundle b = getIntent().getExtras();
-
-        if(b != null){
-            value = b.getInt("key");
-        }
-
         Button btnClear = findViewById(R.id.btnClear);
         Button btnSave = findViewById(R.id.btnSave);
         Button btnBack = findViewById(R.id.btnBack);
@@ -32,6 +27,30 @@ public class AddRecipeScreen extends AppCompatActivity {
         final TextView txtDescription = findViewById(R.id.txtDescription);
         final Intent intent = new Intent(this, RecipesScreen.class);
         intent.putExtra("Thing to do", "Go to back to recipe screen");
+
+        //get recipeId for edit or whether this is a new recipe
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+            value = b.getInt("key");
+        }
+
+        String name = "";
+        String body = "";
+
+        try{
+            Endpoints.getRecipe(String.valueOf(value));
+
+            //parse out recipe name and body
+
+            //write over name and body
+            name = "";
+            body = "";
+
+            txtRecipeName.setText(name);
+            txtDescription.setText(body);
+        } catch(Exception e){
+            Toast.makeText(getApplicationContext(),"Error Loading Recipe",Toast.LENGTH_SHORT).show();
+        }
 
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +65,28 @@ public class AddRecipeScreen extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                //TO DO: save recipe name and description
+                //updating a recipe
+                if(value != 0){
+                    try{
+                        Endpoints.updateRecipe(value, txtDescription.getText().toString(),
+                                txtRecipeName.getText().toString());
+                    } catch(Exception e){
+                        Toast.makeText(getApplicationContext(),"Unable To Update",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                //creating a recipe
+                if (value == 0) {
+                    try{
+                        Endpoints.createRecipe( txtDescription.getText().toString(),
+                                txtRecipeName.getText().toString());
+                    } catch(Exception e){
+                        Toast.makeText(getApplicationContext(),"Unable To Create Recipe",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
 
@@ -55,9 +95,8 @@ public class AddRecipeScreen extends AppCompatActivity {
             public void onClick(View view)
             {
                 //if value = 1, ask before they leave
-                if(value == 1){
-                    //TO DO: ask before leaving
-
+                if(value != 0){
+                    startActivity(intent);
                 }
                 //if value = 0, just go back
                 if (value == 0) {
@@ -65,6 +104,5 @@ public class AddRecipeScreen extends AppCompatActivity {
                 }
             }
         });
-        //TO DO: if a recipe is being edited, check to save changes before closing or going back
     }
 }

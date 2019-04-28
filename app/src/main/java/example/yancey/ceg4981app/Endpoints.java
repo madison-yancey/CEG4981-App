@@ -528,7 +528,7 @@ public class Endpoints {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("RESPONSE: " + jsonResponse);
+        //System.out.println("RESPONSE: " + jsonResponse);
         return jsonResponse;
     }
 

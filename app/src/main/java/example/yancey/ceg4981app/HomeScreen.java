@@ -25,9 +25,13 @@ public class HomeScreen extends AppCompatActivity {
         //TO DO: When screen opens (or refreshes), redisplay the temperature, setting, and
         // if a schedule is being used
 
-        String temp = Endpoints.getTemp();     //prints temperature in Endpoints
-        temp = temp.trim();
-        tvTemp.setText(temp + " °F");
+        try{
+            String temp = Endpoints.getTemp();     //prints temperature in Endpoints
+            temp = temp.trim();
+            tvTemp.setText(temp + " °F");
+        } catch (Exception e){
+            tvTemp.setText("N/A");
+        }
 
         final Intent intent = new Intent(this, CookScreen.class);
         intent.putExtra("Thing to do", "Go to cook screen");
