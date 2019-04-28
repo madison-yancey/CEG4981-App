@@ -22,8 +22,6 @@ public class ScheduleScreen extends AppCompatActivity {
         setContentView(R.layout.schedule_screen);
 
         Button btnAddSchedule = findViewById(R.id.btnAddSchedule);
-        Button btnEditSchedule = findViewById(R.id.btnEditSchedule);
-        Button btnDeleteSchedule = findViewById(R.id.btnDeleteSchedule);
         Button btnRefreshSchedule = findViewById(R.id.btnRefreshSchedule);
         final Intent intent = new Intent(this, AddScheduleScreen.class);
         LinearLayout layout = findViewById(R.id.layoutSchedule);
@@ -35,42 +33,11 @@ public class ScheduleScreen extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                //user adds new recipe, not editing one
+                //user adds new schedule, not editing one
                 Bundle b = new Bundle();
                 b.putInt("key", 0);
                 intent.putExtras(b);
                 startActivity(intent);
-            }
-        });
-
-        btnEditSchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                //user edits schedule
-                int value = 1; //get value from row
-
-                Bundle b = new Bundle();
-                b.putInt("key", value);
-                intent.putExtras(b);
-                startActivity(intent);
-            }
-        });
-
-        btnDeleteSchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                int value = -1; //get value from row
-
-                try{
-                    Endpoints.deleteSchedule(value);
-                    Toast.makeText(getApplicationContext(),"Schedule Successfully Deleted",
-                            Toast.LENGTH_SHORT).show();
-                }catch(Exception e){
-                    Toast.makeText(getApplicationContext(),"Schedule Could Not Be Deleted",
-                            Toast.LENGTH_SHORT).show();
-                }
             }
         });
 

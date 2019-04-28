@@ -21,8 +21,6 @@ public class RecipesScreen extends AppCompatActivity {
         setContentView(R.layout.recipes_screen);
 
         Button btnAddRecipe = findViewById(R.id.btnAddRecipe);
-        Button btnEditRecipe = findViewById(R.id.btnEditRecipe);
-        Button btnDeleteRecipe = findViewById(R.id.btnDeleteRecipe);
         Button btnRefreshRecipe = findViewById(R.id.btnRefreshRecipe);
         LinearLayout layout = findViewById(R.id.layout);
         final Intent intent = new Intent(this, AddRecipeScreen.class);
@@ -45,36 +43,7 @@ public class RecipesScreen extends AppCompatActivity {
             }
         });
 
-        btnEditRecipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                //user edits recipe
-                int value = 1; //get value from row
-
-                Bundle b = new Bundle();
-                b.putInt("key", value);
-                intent.putExtras(b);
-                startActivity(intent);
-            }
-        });
-
-        btnDeleteRecipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                int value = -1; //get value from row
-
-                try{
-                    Endpoints.deleteRecipe(value);
-                    Toast.makeText(getApplicationContext(),"Recipe Successfully Deleted",Toast.LENGTH_SHORT).show();
-                }catch(Exception e){
-                    Toast.makeText(getApplicationContext(),"Recipe Could Not Be Deleted",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        btnRefreshRecipe.setOnClickListener(new View.OnClickListener() {
+       btnRefreshRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -91,6 +60,7 @@ public class RecipesScreen extends AppCompatActivity {
 
         String name = "";
         String body = "";
+        int id = 0;
 
         try{
             response = Endpoints.listRecipe();
@@ -102,22 +72,33 @@ public class RecipesScreen extends AppCompatActivity {
                 //write over name and body
                 name = r.getString("name");
                 body = r.getString("body");
+                id = r.getInt("id");
 
                 //add to layout, probably in a loop
-                TextView txtRecipeName = new TextView(this);
-                txtRecipeName.setText(name);
+                final Button btnRecipe = new Button(this);
+                btnRecipe.setId(id);
+                btnRecipe.setText(name + ": " + body);
 
-                TextView txtSpace = new TextView(this);
+                btnRecipe.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        int value = btnRecipe.getId(); //get value from row
+
+                        Bundle b = new Bundle();
+                        b.putInt("key", value);
+                        intent.putExtras(b);
+                        startActivity(intent);
+                    }
+                });
+
+                /*TextView txtSpace = new TextView(this);
                 txtSpace.setText("                  ");
 
                 TextView txtRecipeBody = new TextView(this);
-                txtRecipeBody.setText(body);
+                txtRecipeBody.setText(body);*/
 
-                LinearLayout row = new LinearLayout(this);
-                row.addView(txtRecipeName);
-                row.addView(txtSpace);
-                row.addView(txtRecipeBody);
-                layout.addView(row);
+               /* row.addView(txtSpace);
+                row.addView(txtRecipeBody);*/
+                layout.addView(btnRecipe);
             }
 
         } catch(Exception e) {

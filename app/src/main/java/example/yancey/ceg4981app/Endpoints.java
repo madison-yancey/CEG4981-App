@@ -155,7 +155,7 @@ public class Endpoints {
      */
     public static JSONObject setCookSetting(String cooking_setting){
         OkHttpClient client = new OkHttpClient();
-        String localURL = url;
+        String localURL = url + "setCookSetting?cook_setting=" + cooking_setting;
 
         clearPreviousEndpointContext();
 
@@ -165,7 +165,7 @@ public class Endpoints {
                 .build();
 
         Request request = new Request.Builder()
-                .url(localURL + "setCookSetting")
+                .url(localURL)
                 .post(requestBody)
                 .build();
 

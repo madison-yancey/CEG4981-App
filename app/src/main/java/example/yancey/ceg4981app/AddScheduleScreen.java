@@ -25,6 +25,7 @@ public class AddScheduleScreen extends AppCompatActivity {
         Button btnClear = findViewById(R.id.btnClear2);
         Button btnSave = findViewById(R.id.btnSave2);
         Button btnBack = findViewById(R.id.btnBack2);
+        Button btnDelete = findViewById(R.id.btnDeleteSchedule);
 
         final TextView txtScheduleName = findViewById(R.id.txtScheduleName);
         final TextView txtScheduleDescription = findViewById(R.id.txtScheduleDescription);
@@ -66,7 +67,7 @@ public class AddScheduleScreen extends AppCompatActivity {
                 txtScheduleDescription.setText(body);
                 txtScheduleTime.setText(String.valueOf(time));
 
-                //TO DO: FIX THIS 
+                //TO DO: FIX THIS
                 if(setting == "3"){
                     rbHigh.setChecked(true);
                     /*rbLow.setChecked(false);
@@ -112,6 +113,8 @@ public class AddScheduleScreen extends AppCompatActivity {
                                 txtScheduleName.getText().toString(),
                                 Integer.parseInt(txtScheduleTime.getText().toString()),
                                 String.valueOf(rbSetting));
+                        Toast.makeText(getApplicationContext(),"Schedule Updated",
+                                Toast.LENGTH_SHORT).show();
                     } catch(Exception e){
                         Toast.makeText(getApplicationContext(),"Unable To Update",
                                 Toast.LENGTH_SHORT).show();
@@ -150,6 +153,21 @@ public class AddScheduleScreen extends AppCompatActivity {
                 //if value = 0, just go back
                 if (value == 0) {
                     startActivity(intent);
+                }
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                try{
+                    Endpoints.deleteSchedule(value);
+                    Toast.makeText(getApplicationContext(),"Schedule Successfully Deleted",
+                            Toast.LENGTH_SHORT).show();
+                }catch(Exception e){
+                    Toast.makeText(getApplicationContext(),"Schedule Could Not Be Deleted",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });

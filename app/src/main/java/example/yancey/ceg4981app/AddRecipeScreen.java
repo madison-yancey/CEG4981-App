@@ -25,6 +25,7 @@ public class AddRecipeScreen extends AppCompatActivity {
         Button btnClear = findViewById(R.id.btnClear);
         Button btnSave = findViewById(R.id.btnSave);
         Button btnBack = findViewById(R.id.btnBack);
+        Button btnDelete = findViewById(R.id.btnDeleteRecipe);
 
         final TextView txtRecipeName = findViewById(R.id.txtRecipeName);
         final TextView txtDescription = findViewById(R.id.txtDescription);
@@ -40,8 +41,6 @@ public class AddRecipeScreen extends AppCompatActivity {
             try{
                 String name = "";
                 String body = "";
-
-                value = 1;
 
                 //parse out recipe name and body
                 JSONObject response = null;
@@ -116,6 +115,20 @@ public class AddRecipeScreen extends AppCompatActivity {
                 if (value == 0) {
                     startActivity(intent);
                 }
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+            try{
+                Endpoints.deleteRecipe(value);
+                Toast.makeText(getApplicationContext(),"Recipe Successfully Deleted",Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+            }catch(Exception e){
+                Toast.makeText(getApplicationContext(),"Recipe Could Not Be Deleted",Toast.LENGTH_SHORT).show();
+            }
             }
         });
     }
