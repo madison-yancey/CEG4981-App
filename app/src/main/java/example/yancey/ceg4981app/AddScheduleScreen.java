@@ -26,6 +26,7 @@ public class AddScheduleScreen extends AppCompatActivity {
         Button btnSave = findViewById(R.id.btnSave2);
         Button btnBack = findViewById(R.id.btnBack2);
         Button btnDelete = findViewById(R.id.btnDeleteSchedule);
+        Button btnCook = findViewById(R.id.btnCookSchedule);
 
         final TextView txtScheduleName = findViewById(R.id.txtScheduleName);
         final TextView txtScheduleDescription = findViewById(R.id.txtScheduleDescription);
@@ -38,17 +39,17 @@ public class AddScheduleScreen extends AppCompatActivity {
 
         //get scheduleId for edit or whether this is a new schedule
         Bundle b = getIntent().getExtras();
-        if(b != null){
+        if (b != null) {
             value = b.getInt("key");
         }
 
-        if(value != 0){
+        if (value != 0) {
             String name = "";
             String body = "";
             int time = 0;
             String setting = "";
 
-            try{
+            try {
                 //parse out schedule
                 JSONObject response = null;
                 JSONObject theSchedule = null;
@@ -68,7 +69,7 @@ public class AddScheduleScreen extends AppCompatActivity {
                 txtScheduleTime.setText(String.valueOf(time));
 
                 //TO DO: FIX THIS
-                if(setting == "3"){
+                if (setting == "3") {
                     rbHigh.setChecked(true);
                     /*rbLow.setChecked(false);
                     rbWarm.setChecked(false);*/
@@ -76,20 +77,19 @@ public class AddScheduleScreen extends AppCompatActivity {
                     //rbHigh.setChecked(false);
                     rbLow.setChecked(true);
                     //rbWarm.setChecked(false);
-                } else if(setting == "1"){
+                } else if (setting == "1") {
                     /*rbHigh.setChecked(false);
                     rbLow.setChecked(false);*/
                     rbWarm.setChecked(true);
                 }
-            } catch(Exception e){
-                Toast.makeText(getApplicationContext(),"Error Loading Schedule",Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Error Loading Schedule", Toast.LENGTH_SHORT).show();
             }
         }
 
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 txtScheduleName.setText("");
                 txtScheduleDescription.setText("");
                 txtScheduleTime.setText("");
@@ -101,25 +101,30 @@ public class AddScheduleScreen extends AppCompatActivity {
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 //updating a schedule
-                if(value != 0){
-                    try{
-                        int rbSetting = group.getCheckedRadioButtonId();
-                        rbSetting = rbSetting++;
+                if (value != 0) {
+                    try {
+                        String rbSetting = "";
+
+                        if (rbHigh.isChecked()) {
+                            rbSetting = "3";
+                        } else if (rbLow.isChecked()) {
+                            rbSetting = "2";
+                        } else if (rbWarm.isChecked()) {
+                            rbSetting = "1";
+                        }
 
                         Endpoints.updateSchedule(value, txtScheduleDescription.getText().toString(),
                                 txtScheduleName.getText().toString(),
                                 Integer.parseInt(txtScheduleTime.getText().toString()),
-                                String.valueOf(rbSetting));
-                        Toast.makeText(getApplicationContext(),"Schedule Updated",
+                                rbSetting);
+                        Toast.makeText(getApplicationContext(), "Schedule Updated",
                                 Toast.LENGTH_SHORT).show();
-                    } catch(Exception e){
-                        Toast.makeText(getApplicationContext(),"Unable To Update",
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Unable To Update",
                                 Toast.LENGTH_SHORT).show();
                     }
-
                 }
 
                 //creating a schedule
@@ -129,13 +134,13 @@ public class AddScheduleScreen extends AppCompatActivity {
                     rbSetting = rbSetting++;
 
                     Log.d("Setting", String.valueOf(rbSetting));
-                    try{
+                    try {
                         Endpoints.createSchedule(txtScheduleDescription.getText().toString(),
                                 txtScheduleName.getText().toString(),
                                 Integer.parseInt(txtScheduleTime.getText().toString()),
                                 String.valueOf(rbSetting));
-                    } catch(Exception e){
-                        Toast.makeText(getApplicationContext(),"Unable To Create Schedule",
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Unable To Create Schedule",
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -144,10 +149,9 @@ public class AddScheduleScreen extends AppCompatActivity {
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 //if value = 1, ask before they leave
-                if(value != 0){
+                if (value != 0) {
                     startActivity(intent);
                 }
                 //if value = 0, just go back
@@ -159,15 +163,30 @@ public class AddScheduleScreen extends AppCompatActivity {
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                try{
+            public void onClick(View view) {
+                try {
                     Endpoints.deleteSchedule(value);
-                    Toast.makeText(getApplicationContext(),"Schedule Successfully Deleted",
+                    Toast.makeText(getApplicationContext(), "Schedule Successfully Deleted",
                             Toast.LENGTH_SHORT).show();
-                }catch(Exception e){
-                    Toast.makeText(getApplicationContext(),"Schedule Could Not Be Deleted",
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Schedule Could Not Be Deleted",
                             Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnCook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Endpoints.startSchedule(String.valueOf(value));
+                    Toast.makeText(getApplicationContext(), "Schedule Started",
+                            Toast.LENGTH_SHORT).show();
+
+                    //pass back to the homescreen 0 if no schedule
+                    //1 bc schedule started and 1 means start timer and check checkbox
+                } catch (Exception e) {
+
                 }
             }
         });

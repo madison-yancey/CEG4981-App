@@ -31,8 +31,7 @@ public class ScheduleScreen extends AppCompatActivity {
          */
         btnAddSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 //user adds new schedule, not editing one
                 Bundle b = new Bundle();
                 b.putInt("key", 0);
@@ -43,8 +42,7 @@ public class ScheduleScreen extends AppCompatActivity {
 
         btnRefreshSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 //refresh
             }
         });
@@ -63,11 +61,11 @@ public class ScheduleScreen extends AppCompatActivity {
         String setting = "";
         int id = 0;
 
-        try{
+        try {
             response = Endpoints.listSchedule();
             allSchedules = response.getJSONArray("schedules");
 
-            for(int i = 0; i < allSchedules.length(); i++){
+            for (int i = 0; i < allSchedules.length(); i++) {
                 s = allSchedules.getJSONObject(i);
 
                 //write over name and body
@@ -121,8 +119,8 @@ public class ScheduleScreen extends AppCompatActivity {
                 Log.d("View", String.valueOf(layout.getChildAt(j).getId()));
             }*/
 
-        } catch(Exception e) {
-            Toast.makeText(getApplicationContext(),"Unable To Get Schedules",
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Unable To Get Schedules",
                     Toast.LENGTH_SHORT).show();
             Log.d("All Schedules", response.toString());
         }
