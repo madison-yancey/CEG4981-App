@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONObject;
 
 public class AddRecipeScreen extends AppCompatActivity {
 
@@ -26,7 +29,6 @@ public class AddRecipeScreen extends AppCompatActivity {
         final TextView txtRecipeName = findViewById(R.id.txtRecipeName);
         final TextView txtDescription = findViewById(R.id.txtDescription);
         final Intent intent = new Intent(this, RecipesScreen.class);
-        intent.putExtra("Thing to do", "Go to back to recipe screen");
 
         //get recipeId for edit or whether this is a new recipe
         Bundle b = getIntent().getExtras();
@@ -34,22 +36,29 @@ public class AddRecipeScreen extends AppCompatActivity {
             value = b.getInt("key");
         }
 
-        String name = "";
-        String body = "";
+        if(value != 0){
+            try{
+                String name = "";
+                String body = "";
 
-        try{
-            Endpoints.getRecipe(String.valueOf(value));
+                value = 1;
 
-            //parse out recipe name and body
+                //parse out recipe name and body
+                JSONObject response = null;
+                JSONObject theRecipe = null;
 
-            //write over name and body
-            name = "";
-            body = "";
+                response = Endpoints.getRecipe(String.valueOf(value));
+                theRecipe = response.getJSONObject("recipe");
 
-            txtRecipeName.setText(name);
-            txtDescription.setText(body);
-        } catch(Exception e){
-            Toast.makeText(getApplicationContext(),"Error Loading Recipe",Toast.LENGTH_SHORT).show();
+                //write over name and body
+                name = theRecipe.getString("name");
+                body = theRecipe.getString("body");
+
+                txtRecipeName.setText(name);
+                txtDescription.setText(body);
+            } catch(Exception e){
+                Toast.makeText(getApplicationContext(),"Error Loading Recipe",Toast.LENGTH_SHORT).show();
+            }
         }
 
         btnClear.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +79,8 @@ public class AddRecipeScreen extends AppCompatActivity {
                     try{
                         Endpoints.updateRecipe(value, txtDescription.getText().toString(),
                                 txtRecipeName.getText().toString());
+                        Toast.makeText(getApplicationContext(),"Recipe Updated",
+                                Toast.LENGTH_SHORT).show();
                     } catch(Exception e){
                         Toast.makeText(getApplicationContext(),"Unable To Update",
                                 Toast.LENGTH_SHORT).show();
@@ -82,6 +93,9 @@ public class AddRecipeScreen extends AppCompatActivity {
                     try{
                         Endpoints.createRecipe( txtDescription.getText().toString(),
                                 txtRecipeName.getText().toString());
+                        Toast.makeText(getApplicationContext(),"Recipe Created",
+                                Toast.LENGTH_SHORT).show();
+                        startActivity(intent);
                     } catch(Exception e){
                         Toast.makeText(getApplicationContext(),"Unable To Create Recipe",
                                 Toast.LENGTH_SHORT).show();

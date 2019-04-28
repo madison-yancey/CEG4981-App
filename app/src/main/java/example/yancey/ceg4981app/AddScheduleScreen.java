@@ -11,6 +11,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 public class AddScheduleScreen extends AppCompatActivity {
 
     private int value = -1;
@@ -39,41 +41,48 @@ public class AddScheduleScreen extends AppCompatActivity {
             value = b.getInt("key");
         }
 
-        String name = "";
-        String body = "";
-        int time = 0;
-        String setting = "";
+        if(value != 0){
+            String name = "";
+            String body = "";
+            int time = 0;
+            String setting = "";
 
-        try{
-            Endpoints.getSchedule(String.valueOf(value));
+            try{
+                //parse out schedule
+                JSONObject response = null;
+                JSONObject theSchedule = null;
 
-            //parse out recipe name and body
+                response = Endpoints.getSchedule(String.valueOf(value));
+                theSchedule = response.getJSONObject("schedule");
 
-            //write over name, body, time, and setting
-            name = "";
-            body = "";
-            time = 0;
-            setting = "";
+                //write over name and body
+                name = theSchedule.getString("name");
+                body = theSchedule.getString("body");
+                time = theSchedule.getInt("time");
+                setting = theSchedule.getString("setting");
 
-            txtScheduleName.setText(name);
-            txtScheduleDescription.setText(body);
-            txtScheduleTime.setText(String.valueOf(time));
+                Log.d("SETTING", setting);
+                txtScheduleName.setText(name);
+                txtScheduleDescription.setText(body);
+                txtScheduleTime.setText(String.valueOf(time));
 
-            if(setting == "3"){
-                rbHigh.setChecked(true);
-                rbLow.setChecked(false);
-                rbWarm.setChecked(false);
-            } else if (setting == "2") {
-                rbHigh.setChecked(false);
-                rbLow.setChecked(true);
-                rbWarm.setChecked(false);
-            } else if(setting == "1"){
-                rbHigh.setChecked(false);
-                rbLow.setChecked(false);
-                rbWarm.setChecked(true);
+                //TO DO: FIX THIS 
+                if(setting == "3"){
+                    rbHigh.setChecked(true);
+                    /*rbLow.setChecked(false);
+                    rbWarm.setChecked(false);*/
+                } else if (setting == "2") {
+                    //rbHigh.setChecked(false);
+                    rbLow.setChecked(true);
+                    //rbWarm.setChecked(false);
+                } else if(setting == "1"){
+                    /*rbHigh.setChecked(false);
+                    rbLow.setChecked(false);*/
+                    rbWarm.setChecked(true);
+                }
+            } catch(Exception e){
+                Toast.makeText(getApplicationContext(),"Error Loading Schedule",Toast.LENGTH_SHORT).show();
             }
-        } catch(Exception e){
-            Toast.makeText(getApplicationContext(),"Error Loading Schedule",Toast.LENGTH_SHORT).show();
         }
 
         btnClear.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +119,7 @@ public class AddScheduleScreen extends AppCompatActivity {
 
                 }
 
-                //creating a recipe
+                //creating a schedule
                 if (value == 0) {
 
                     int rbSetting = group.getCheckedRadioButtonId();

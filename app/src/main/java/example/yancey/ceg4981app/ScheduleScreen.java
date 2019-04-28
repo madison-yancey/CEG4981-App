@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ScheduleScreen extends AppCompatActivity {
@@ -82,55 +84,81 @@ public class ScheduleScreen extends AppCompatActivity {
 
 
         /**
-         * LOAD IN ALL RECIPES
+         * LOAD IN ALL SCHEDULES
          */
-        JSONObject allRecipes = null;
+        JSONObject response = null;
+        JSONArray allSchedules = null;
+        JSONObject s = null;
+
+        String name = "";
+        String body = "";
+        int time = 0;
+        String setting = "";
+        int id = 0;
+
         try{
-            allRecipes = Endpoints.listRecipe();
+            response = Endpoints.listSchedule();
+            allSchedules = response.getJSONArray("schedules");
+
+            for(int i = 0; i < allSchedules.length(); i++){
+                s = allSchedules.getJSONObject(i);
+
+                //write over name and body
+                name = s.getString("name");
+                body = s.getString("body");
+                time = s.getInt("time");
+                setting = s.getString("setting");
+                id = s.getInt("id");
+
+                //add to layout, probably in a loop
+                final Button btnSchedule = new Button(this);
+                btnSchedule.setId(id);
+                btnSchedule.setText(name);
+
+                btnSchedule.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        int value = btnSchedule.getId(); //get value from row
+
+                        Bundle b = new Bundle();
+                        b.putInt("key", value);
+                        intent.putExtras(b);
+                        startActivity(intent);
+                    }
+                });
+                /*TextView txtScheduleBody = new TextView(this);
+                txtScheduleBody.setText(body);
+
+                TextView txtScheduleTime = new TextView(this);
+                txtScheduleTime.setText(String.valueOf(time));
+
+                TextView txtScheduleSetting = new TextView(this);
+                txtScheduleSetting.setText(setting);
+
+                TextView txtSpace1 = new TextView(this);
+                txtSpace1.setText("     ");
+                TextView txtSpace2 = new TextView(this);
+                txtSpace2.setText("     ");
+                TextView txtSpace3 = new TextView(this);
+                txtSpace3.setText("     ");*/
+
+                layout.addView(btnSchedule);
+                /*row.addView(txtSpace1);
+                row.addView(txtScheduleBody);
+                row.addView(txtSpace2);
+                row.addView(txtScheduleTime);
+                row.addView(txtSpace3);
+                row.addView(txtScheduleSetting);*/
+            }
+
+            /*for(int j = 0; j < layout.getChildCount(); j++){
+                Log.d("View", String.valueOf(layout.getChildAt(j).getId()));
+            }*/
+
         } catch(Exception e) {
-            Log.d("All Recipes", allRecipes.toString());
+            Toast.makeText(getApplicationContext(),"Unable To Get Schedules",
+                    Toast.LENGTH_SHORT).show();
+            Log.d("All Schedules", response.toString());
         }
-
-        //parse out recipes
-
-        //add to layout, probably in a loop
-        TextView txtScheduleName = new TextView(this);
-        //txtRecipeName.setTextColor(000000);
-        //txtRecipeName.setTextSize(14);
-        txtScheduleName.setText("Test Schedule");
-
-        TextView txtScheduleBody = new TextView(this);
-        //txtRecipeBody.setTextColor(000000);
-        //txtRecipeBody.setTextSize(14);
-        txtScheduleBody.setText("This is a test");
-
-        TextView txtScheduleTime = new TextView(this);
-        //txtRecipeBody.setTextColor(000000);
-        //txtRecipeBody.setTextSize(14);
-        txtScheduleTime.setText("1200");
-
-        TextView txtScheduleSetting = new TextView(this);
-        //txtRecipeBody.setTextColor(000000);
-        //txtRecipeBody.setTextSize(14);
-        txtScheduleSetting.setText("Warm");
-
-        TextView txtSpace1 = new TextView(this);
-        txtSpace1.setText("     ");
-        TextView txtSpace2 = new TextView(this);
-        txtSpace2.setText("     ");
-        TextView txtSpace3 = new TextView(this);
-        txtSpace3.setText("     ");
-
-        LinearLayout row = new LinearLayout(this);
-        row.addView(txtScheduleName);
-        row.addView(txtSpace1);
-        row.addView(txtScheduleBody);
-        row.addView(txtSpace2);
-        row.addView(txtScheduleTime);
-        row.addView(txtSpace3);
-        row.addView(txtScheduleSetting);
-        layout.addView(row);
-
 
         // Endpoints.createSchedule("test", "testSchedule", 120, "1");
         // Endpoints.updateSchedule(8, "update", "updatedTestSchedule", 12000, "2");
@@ -140,7 +168,5 @@ public class ScheduleScreen extends AppCompatActivity {
         //1 - Warm
         //2 - Low
         //3 - High
-
-        //get all schedules
     }
 }

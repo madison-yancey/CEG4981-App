@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class RecipesScreen extends AppCompatActivity {
@@ -81,42 +82,47 @@ public class RecipesScreen extends AppCompatActivity {
             }
         });
 
-
         /**
          * LOAD IN ALL RECIPES
          */
-        JSONObject allRecipes = null;
+        JSONObject response = null;
+        JSONArray allRecipes = null;
+        JSONObject r = null;
+
+        String name = "";
+        String body = "";
+
         try{
-            allRecipes = Endpoints.listRecipe();
+            response = Endpoints.listRecipe();
+            allRecipes = response.getJSONArray("recipes");
+
+            for(int i = 0; i < allRecipes.length(); i++){
+                r = allRecipes.getJSONObject(i);
+
+                //write over name and body
+                name = r.getString("name");
+                body = r.getString("body");
+
+                //add to layout, probably in a loop
+                TextView txtRecipeName = new TextView(this);
+                txtRecipeName.setText(name);
+
+                TextView txtSpace = new TextView(this);
+                txtSpace.setText("                  ");
+
+                TextView txtRecipeBody = new TextView(this);
+                txtRecipeBody.setText(body);
+
+                LinearLayout row = new LinearLayout(this);
+                row.addView(txtRecipeName);
+                row.addView(txtSpace);
+                row.addView(txtRecipeBody);
+                layout.addView(row);
+            }
+
         } catch(Exception e) {
-            Log.d("All Recipes", allRecipes.toString());
+            Log.d("All Recipes", response.toString());
         }
-
-        //parse out recipes
-
-        //add to layout, probably in a loop
-        TextView txtRecipeName = new TextView(this);
-        //txtRecipeName.setTextColor(000000);
-        //txtRecipeName.setTextSize(14);
-        txtRecipeName.setText("Recipe Name");
-
-        TextView txtSpace = new TextView(this);
-        txtSpace.setText("                  ");
-
-        TextView txtRecipeBody = new TextView(this);
-        //txtRecipeBody.setTextColor(000000);
-        //txtRecipeBody.setTextSize(14);
-        txtRecipeBody.setText("Recipe Body");
-
-        LinearLayout row = new LinearLayout(this);
-        row.addView(txtRecipeName);
-        row.addView(txtSpace);
-        row.addView(txtRecipeBody);
-        layout.addView(row);
-
-        //get one (1) recipe
-        //JSONObject recipe = Endpoints.getRecipe("1");
-        //Log.d("Recipe: ", recipe.toString());
 
 
 //        String s = "{\n" + "\"recipes\": [\n" + "{\n" + "\"body\": \"This is a chicken recipe\",\n" +
