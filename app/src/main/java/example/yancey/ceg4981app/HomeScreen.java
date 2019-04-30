@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 public class HomeScreen extends AppCompatActivity {
 
+    private int value = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,15 +23,32 @@ public class HomeScreen extends AppCompatActivity {
         TextView tvTemp = findViewById(R.id.tvTemp);
         TextView tvSetting = findViewById(R.id.tvSetting);
         CheckBox chkSchedule = findViewById(R.id.chkSchedule);
+        TextView tvTimer = findViewById(R.id.tvTimer);
+
+        //get whether schedule is starting or ending
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            value = b.getInt("key");
+        }
+
+        if (value != 1) {
+            //end timer
+            chkSchedule.setChecked(false);
+            tvTimer.setText("N/A");
+
+        } else if (value == 1) {
+            chkSchedule.setChecked(true);
+            //start timer
+        }
 
         //TO DO: When screen opens (or refreshes), redisplay the temperature, setting, and
         // if a schedule is being used
 
-        try{
+        try {
             String temp = Endpoints.getTemp();     //prints temperature in Endpoints
             temp = temp.trim();
             tvTemp.setText(temp + " °F");
-        } catch (Exception e){
+        } catch (Exception e) {
             tvTemp.setText("N/A");
         }
 
@@ -38,8 +57,7 @@ public class HomeScreen extends AppCompatActivity {
 
         btnCook.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 startActivity(intent);
             }
         });

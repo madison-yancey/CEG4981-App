@@ -36,6 +36,7 @@ public class AddScheduleScreen extends AppCompatActivity {
         final RadioButton rbWarm = findViewById(R.id.rbWarm);
         final RadioGroup group = findViewById(R.id.radioGroup);
         final Intent intent = new Intent(this, ScheduleScreen.class);
+        final Intent intentHome = new Intent(this, HomeScreen.class);
 
         //get scheduleId for edit or whether this is a new schedule
         Bundle b = getIntent().getExtras();
@@ -185,8 +186,14 @@ public class AddScheduleScreen extends AppCompatActivity {
 
                     //pass back to the homescreen 0 if no schedule
                     //1 bc schedule started and 1 means start timer and check checkbox
-                } catch (Exception e) {
 
+                    Bundle b = new Bundle();
+                    b.putInt("key", 1);
+                    intentHome.putExtras(b);
+                    startActivity(intentHome);
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Unable To Start Schedule",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });

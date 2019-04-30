@@ -87,9 +87,15 @@ public class ManualCookScreen extends AppCompatActivity {
                 try {
                     Endpoints.setCookSetting(numericalSetting);
                     Toast.makeText(getApplicationContext(), "Setting Updated", Toast.LENGTH_SHORT).show();
+
+                    Bundle b = new Bundle();
+                    b.putInt("key", 0);
+                    intent.putExtras(b);
                     startActivity(intent);
                     //go back to homescreen and pass 0 which means no schedule and clear timer
                 } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Setting Could Not Be Updated",
+                            Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             }
