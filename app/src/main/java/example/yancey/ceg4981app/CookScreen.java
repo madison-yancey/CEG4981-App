@@ -16,6 +16,7 @@ public class CookScreen extends AppCompatActivity {
         Button btnRecipes = findViewById(R.id.btnRecipes);
         Button btnSchedule = findViewById(R.id.btnSchedule);
         Button btnManualCook = findViewById(R.id.btnManual);
+        Button btnBack = findViewById(R.id.btnBackToHome);
 
         final Intent intentRecipes = new Intent(this, RecipesScreen.class);
         intentRecipes.putExtra("Thing to do", "Go to recipes screen");
@@ -25,6 +26,8 @@ public class CookScreen extends AppCompatActivity {
 
         final Intent intentManual = new Intent(this, ManualCookScreen.class);
         intentManual.putExtra("Thing to do", "Go to manual cook screen");
+
+        final Intent intentHome = new Intent(this, HomeScreen.class);
 
         btnRecipes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +50,14 @@ public class CookScreen extends AppCompatActivity {
             public void onClick(View view)
             {
                 startActivity(intentManual);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(intentHome);
             }
         });
     }

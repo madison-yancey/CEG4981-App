@@ -21,8 +21,11 @@ public class RecipesScreen extends AppCompatActivity {
         setContentView(R.layout.recipes_screen);
 
         Button btnAddRecipe = findViewById(R.id.btnAddRecipe);
+        Button btnBack = findViewById(R.id.btnBackToCookR);
         LinearLayout layout = findViewById(R.id.layout);
         final Intent intent = new Intent(this, AddRecipeScreen.class);
+        final Intent intentBack = new Intent(this, CookScreen.class);
+
 
         //if user edits recipe, key = 1
         //if user adds recipe, key = 0;
@@ -39,6 +42,14 @@ public class RecipesScreen extends AppCompatActivity {
                 b.putInt("key", 0);
                 intent.putExtras(b);
                 startActivity(intent);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(intentBack);
             }
         });
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -56,11 +57,14 @@ public class HomeScreen extends AppCompatActivity {
                             tvSetting.setText("Off");
                             tvTimer.setText("00:00");
                             chkSchedule.setChecked(false);
+                            Toast.makeText(getApplicationContext(),"Finished!",
+                                    Toast.LENGTH_SHORT).show();
                         }
                         int displayTimeHr = (time / 3600);
                         int displayTimeMin = ((time % 3600)/60);
                         tvTimer.setText(displayTimeHr + ":" + displayTimeMin);
-                        Log.d("Time remaining:", String.valueOf(time));
+
+                        //Log.d("Time remaining:", String.valueOf(time));
                         //update time
                         if (time != 0) {
                             time = time - 1;

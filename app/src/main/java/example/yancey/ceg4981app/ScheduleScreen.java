@@ -23,7 +23,9 @@ public class ScheduleScreen extends AppCompatActivity {
         setContentView(R.layout.schedule_screen);
 
         Button btnAddSchedule = findViewById(R.id.btnAddSchedule);
+        Button btnBack = findViewById(R.id.btnBackToCookS);
         final Intent intent = new Intent(this, AddScheduleScreen.class);
+        final Intent intentBack = new Intent(this, CookScreen.class);
         LinearLayout layout = findViewById(R.id.layoutSchedule);
 
         Bundle b = getIntent().getExtras();
@@ -43,6 +45,13 @@ public class ScheduleScreen extends AppCompatActivity {
                 b.putInt("key", 0);
                 intent.putExtras(b);
                 startActivity(intent);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentBack);
             }
         });
 
