@@ -183,6 +183,7 @@ public class AddScheduleScreen extends AppCompatActivity {
                     } catch(Exception e){
                         Toast.makeText(getApplicationContext(), "Recipe-Schedule Could Not Be Linked",
                                 Toast.LENGTH_SHORT).show();
+                        startActivity(intentHome);
                     }
                 }
             }
@@ -252,6 +253,7 @@ public class AddScheduleScreen extends AppCompatActivity {
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "Unable To Start Schedule",
                             Toast.LENGTH_SHORT).show();
+                    startActivity(intentHome);
                 }
             }
         });

@@ -33,6 +33,7 @@ public class AddRecipeScreen extends AppCompatActivity {
         final Intent intent = new Intent(this, RecipesScreen.class);
         final Intent intentScheduleScreen = new Intent(this, AddScheduleScreen.class);
         final Intent intentChooseSchedule = new Intent(this, ScheduleScreen.class);
+        final Intent intentHome = new Intent(this, HomeScreen.class);
 
         //get recipeId for edit or whether this is a new recipe
         Bundle b = getIntent().getExtras();
@@ -84,9 +85,11 @@ public class AddRecipeScreen extends AppCompatActivity {
                                 txtRecipeName.getText().toString());
                         Toast.makeText(getApplicationContext(),"Recipe Updated",
                                 Toast.LENGTH_SHORT).show();
+                        startActivity(intentHome);
                     } catch(Exception e){
                         Toast.makeText(getApplicationContext(),"Unable To Update",
                                 Toast.LENGTH_SHORT).show();
+                        startActivity(intentHome);
                     }
 
                 }
@@ -130,10 +133,11 @@ public class AddRecipeScreen extends AppCompatActivity {
                 Endpoints.deleteRecipe(value);
                 Toast.makeText(getApplicationContext(),"Recipe Successfully Deleted",
                         Toast.LENGTH_SHORT).show();
-                startActivity(intent);
+                startActivity(intentHome);
             }catch(Exception e){
                 Toast.makeText(getApplicationContext(),"Recipe Could Not Be Deleted",
                         Toast.LENGTH_SHORT).show();
+                startActivity(intentHome);
             }
             }
         });
