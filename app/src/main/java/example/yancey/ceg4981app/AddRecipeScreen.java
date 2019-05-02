@@ -26,10 +26,13 @@ public class AddRecipeScreen extends AppCompatActivity {
         Button btnSave = findViewById(R.id.btnSave);
         Button btnBack = findViewById(R.id.btnBack);
         Button btnDelete = findViewById(R.id.btnDeleteRecipe);
+        Button btnLink = findViewById(R.id.btnLink);
 
         final TextView txtRecipeName = findViewById(R.id.txtRecipeName);
         final TextView txtDescription = findViewById(R.id.txtDescription);
         final Intent intent = new Intent(this, RecipesScreen.class);
+        final Intent intentScheduleScreen = new Intent(this, AddScheduleScreen.class);
+        final Intent intentChooseSchedule = new Intent(this, ScheduleScreen.class);
 
         //get recipeId for edit or whether this is a new recipe
         Bundle b = getIntent().getExtras();
@@ -56,7 +59,8 @@ public class AddRecipeScreen extends AppCompatActivity {
                 txtRecipeName.setText(name);
                 txtDescription.setText(body);
             } catch(Exception e){
-                Toast.makeText(getApplicationContext(),"Error Loading Recipe",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Error Loading Recipe",
+                        Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -124,11 +128,58 @@ public class AddRecipeScreen extends AppCompatActivity {
             {
             try{
                 Endpoints.deleteRecipe(value);
-                Toast.makeText(getApplicationContext(),"Recipe Successfully Deleted",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Recipe Successfully Deleted",
+                        Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }catch(Exception e){
-                Toast.makeText(getApplicationContext(),"Recipe Could Not Be Deleted",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Recipe Could Not Be Deleted",
+                        Toast.LENGTH_SHORT).show();
             }
+            }
+        });
+
+        btnLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //get recipe id
+                JSONObject result = null;
+
+                try{
+                    result = Endpoints.getRecipeScheduleByRecipeId(value);
+                    Log.d("Response:", result.toString());
+
+                    if(result != null){
+                        int scheudleId = 0;
+                        JSONObject theRecipeSchedule = null;
+
+                        theRecipeSchedule = result.getJSONObject("recipeSchedule");
+
+                        scheudleId = theRecipeSchedule.getInt("schedule_id");
+
+                        Bundle b = new Bundle();
+                        b.putInt("key", scheudleId);
+                        intentScheduleScreen.putExtras(b);
+                        startActivity(intentScheduleScreen);
+                    } /*else{
+                        Toast.makeText(getApplicationContext(),"No Link Found",
+                                Toast.LENGTH_SHORT).show();
+
+                        Bundle b = new Bundle();
+                        b.putInt("key", -1);
+                        b.putInt("recipeId", value);
+                        intentChooseSchedule.putExtras(b);
+                        startActivity(intentChooseSchedule);
+                    }*/
+                } catch(Exception e){
+                    Toast.makeText(getApplicationContext(),"No Link Found",
+                            Toast.LENGTH_SHORT).show();
+
+                    Bundle b = new Bundle();
+                    b.putInt("key", -1);
+                    b.putInt("recipeId", value);
+                    intentChooseSchedule.putExtras(b);
+                    startActivity(intentChooseSchedule);
+                }
             }
         });
     }

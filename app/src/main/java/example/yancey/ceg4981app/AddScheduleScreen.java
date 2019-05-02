@@ -16,6 +16,9 @@ import org.json.JSONObject;
 public class AddScheduleScreen extends AppCompatActivity {
 
     private int value = -1;
+    private int recipeSchedule = 0;
+    private int recipeId = -1;
+    private int time = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +45,28 @@ public class AddScheduleScreen extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         if (b != null) {
             value = b.getInt("key");
+            recipeSchedule = b.getInt("recipeSchedule");
+            recipeId = b.getInt("recipeId");
+        }
+
+        if(recipeSchedule != 0){
+            //change to say save recipe whatever
+            btnSave.setText("LINK");
+            btnBack.setVisibility(View.INVISIBLE);
+            btnDelete.setVisibility(View.INVISIBLE);
+            btnClear.setVisibility(View.INVISIBLE);
+            btnCook.setVisibility(View.INVISIBLE);
+        } else{
+            btnSave.setText("SAVE");
+            btnBack.setVisibility(View.VISIBLE);
+            btnDelete.setVisibility(View.VISIBLE);
+            btnClear.setVisibility(View.VISIBLE);
+            btnCook.setVisibility(View.VISIBLE);
         }
 
         if (value != 0) {
             String name = "";
             String body = "";
-            int time = 0;
             String setting = "";
 
             try {
@@ -104,44 +123,65 @@ public class AddScheduleScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //updating a schedule
-                if (value != 0) {
-                    try {
-                        String rbSetting = "";
 
-                        if (rbHigh.isChecked()) {
-                            rbSetting = "3";
-                        } else if (rbLow.isChecked()) {
-                            rbSetting = "2";
-                        } else if (rbWarm.isChecked()) {
-                            rbSetting = "1";
+                if(recipeSchedule == 0) {
+
+                    if (value != 0) {
+                        try {
+                            String rbSetting = "0";
+
+                            if (rbHigh.isChecked()) {
+                                rbSetting = "3";
+                            } else if (rbLow.isChecked()) {
+                                rbSetting = "2";
+                            } else if (rbWarm.isChecked()) {
+                                rbSetting = "1";
+                            }
+
+                            Endpoints.updateSchedule(value, txtScheduleDescription.getText().toString(),
+                                    txtScheduleName.getText().toString(),
+                                    Integer.parseInt(txtScheduleTime.getText().toString()),
+                                    rbSetting);
+                            Toast.makeText(getApplicationContext(), "Schedule Updated",
+                                    Toast.LENGTH_SHORT).show();
+
+                            startActivity(intentHome);
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), "Unable To Update",
+                                    Toast.LENGTH_SHORT).show();
+
+                            startActivity(intentHome);
                         }
-
-                        Endpoints.updateSchedule(value, txtScheduleDescription.getText().toString(),
-                                txtScheduleName.getText().toString(),
-                                Integer.parseInt(txtScheduleTime.getText().toString()),
-                                rbSetting);
-                        Toast.makeText(getApplicationContext(), "Schedule Updated",
-                                Toast.LENGTH_SHORT).show();
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Unable To Update",
-                                Toast.LENGTH_SHORT).show();
                     }
-                }
 
-                //creating a schedule
-                if (value == 0) {
+                    //creating a schedule
+                    if (value == 0) {
 
-                    int rbSetting = group.getCheckedRadioButtonId();
-                    rbSetting = rbSetting++;
+                        int rbSetting = group.getCheckedRadioButtonId();
+                        rbSetting = rbSetting++;
 
-                    Log.d("Setting", String.valueOf(rbSetting));
-                    try {
-                        Endpoints.createSchedule(txtScheduleDescription.getText().toString(),
-                                txtScheduleName.getText().toString(),
-                                Integer.parseInt(txtScheduleTime.getText().toString()),
-                                String.valueOf(rbSetting));
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Unable To Create Schedule",
+                        Log.d("Setting", String.valueOf(rbSetting));
+                        try {
+                            Endpoints.createSchedule(txtScheduleDescription.getText().toString(),
+                                    txtScheduleName.getText().toString(),
+                                    Integer.parseInt(txtScheduleTime.getText().toString()),
+                                    String.valueOf(rbSetting));
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), "Unable To Create Schedule",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else{
+                    try{
+                        //create recipe schedule
+                        Endpoints.createRecipeSchedule("test", value, recipeId);
+                        Toast.makeText(getApplicationContext(), "Recipe-Schedule Linked",
+                                Toast.LENGTH_SHORT).show();
+
+                        //go to home screen
+                        startActivity(intentHome);
+                    } catch(Exception e){
+                        Toast.makeText(getApplicationContext(), "Recipe-Schedule Could Not Be Linked",
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -169,9 +209,13 @@ public class AddScheduleScreen extends AppCompatActivity {
                     Endpoints.deleteSchedule(value);
                     Toast.makeText(getApplicationContext(), "Schedule Successfully Deleted",
                             Toast.LENGTH_SHORT).show();
+
+                    startActivity(intentHome);
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "Schedule Could Not Be Deleted",
                             Toast.LENGTH_SHORT).show();
+
+                    startActivity(intentHome);
                 }
             }
         });
@@ -187,8 +231,22 @@ public class AddScheduleScreen extends AppCompatActivity {
                     //pass back to the homescreen 0 if no schedule
                     //1 bc schedule started and 1 means start timer and check checkbox
 
+                    int setting = 0;
+
+                    if (rbHigh.isChecked()) {
+                        setting = 3;
+                    } else if (rbLow.isChecked()) {
+                        setting = 2;
+                    } else if (rbWarm.isChecked()) {
+                        setting = 1;
+                    }
+
                     Bundle b = new Bundle();
+                    b.putInt("setting", setting);
+                    //start timer
+                    //start timer
                     b.putInt("key", 1);
+                    b.putInt("timer", time);
                     intentHome.putExtras(b);
                     startActivity(intentHome);
                 } catch (Exception e) {

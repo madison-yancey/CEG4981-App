@@ -4,17 +4,18 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ScheduleScreen extends AppCompatActivity {
+
+    private int recipeSchedule = 0;
+    private int recipeId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,12 @@ public class ScheduleScreen extends AppCompatActivity {
         Button btnRefreshSchedule = findViewById(R.id.btnRefreshSchedule);
         final Intent intent = new Intent(this, AddScheduleScreen.class);
         LinearLayout layout = findViewById(R.id.layoutSchedule);
+
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            recipeSchedule = b.getInt("key");
+            recipeId = b.getInt("recipeId");
+        }
 
         /**
          * BUTTONS
@@ -86,6 +93,8 @@ public class ScheduleScreen extends AppCompatActivity {
 
                         Bundle b = new Bundle();
                         b.putInt("key", value);
+                        b.putInt("recipeSchedule", recipeSchedule);
+                        b.putInt("recipeId", recipeId);
                         intent.putExtras(b);
                         startActivity(intent);
                     }

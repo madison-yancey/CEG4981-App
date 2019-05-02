@@ -88,7 +88,21 @@ public class ManualCookScreen extends AppCompatActivity {
                     Endpoints.setCookSetting(numericalSetting);
                     Toast.makeText(getApplicationContext(), "Setting Updated", Toast.LENGTH_SHORT).show();
 
+                    int setting2 = 0;
+
+                    if (setting == "High") {
+                        setting2 = 3;
+                    } else if (setting == "Low") {
+                        setting2 = 2;
+                    } else if (setting == "Warm") {
+                        setting2 = 1;
+                    } else {
+                        setting2 = 0;
+                    }
+
                     Bundle b = new Bundle();
+                    b.putInt("setting", setting2);
+                    //stop timer
                     b.putInt("key", 0);
                     intent.putExtras(b);
                     startActivity(intent);

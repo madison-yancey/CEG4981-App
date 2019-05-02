@@ -255,6 +255,116 @@ public class Endpoints {
         return stringResponse;
     }
 
+    /**
+     * This will GET a recipe-schedule from the server by recipeId.
+     * On success the response will be a JSON object with the recipe-schedule
+     * On failure the response will be a null jSON object
+     * @param recipeId start of id ranges to get from server
+     */
+
+    public static JSONObject getRecipeScheduleByRecipeId(int recipeId) {
+
+        OkHttpClient client = new OkHttpClient();
+        String localURL = url + "getRecipeScheduleByRecipeId?recipeId=" + recipeId;
+        //Log.d("Recipe URL:", localURL);
+        // Form request
+        Request request = new Request.Builder()
+                .url(localURL)
+                .build();
+
+        clearPreviousEndpointContext();
+        // this is here to await the end of the call so that way we don't do anything until request comes back
+        // async call because sync call causes exception
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("Recipe: Failed request");
+                e.printStackTrace();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    jsonResponse = null;
+                    //throw new IOException("Unexpected code " + response);
+                } else {
+                    try {
+                        jsonResponse = new JSONObject(response.body().string());
+                    } catch (JSONException e) {
+                        System.out.println("Failed to get JSON");
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(jsonResponse);
+                countDownLatch.countDown();
+            }
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return jsonResponse;
+
+    }
+
+    /**
+     * Create recipe-schedule POST
+     *
+     */
+    public static JSONObject createRecipeSchedule(String name, int scheduleId, int recipeId){
+        OkHttpClient client = new OkHttpClient();
+        String localURL = url;
+
+        clearPreviousEndpointContext();
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("name", name)
+                .addFormDataPart("scheduleId", Integer.toString(scheduleId))
+                .addFormDataPart("recipeId", Integer.toString(recipeId))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(localURL + "createRecipeSchedule")
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("Failed request");
+                e.printStackTrace();
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    try {
+                        jsonResponse = new JSONObject(response.body().string());
+                    } catch (JSONException e) {
+                        System.out.println("Failed to get JSON");
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(jsonResponse);
+                countDownLatch.countDown();
+            }
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return jsonResponse;
+
+    }
 
     //********************SCHEDULE**************************
 
@@ -419,7 +529,6 @@ public class Endpoints {
             e.printStackTrace();
         }
         return jsonResponse;
-
     }
 
     /**

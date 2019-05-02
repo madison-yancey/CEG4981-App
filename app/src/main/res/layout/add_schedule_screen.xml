@@ -140,7 +140,7 @@
         android:layout_width="75dp"
         android:layout_height="35dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="55dp"
         android:layout_marginBottom="76dp"
         android:background="@color/colorPrimary"
@@ -149,9 +149,10 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/btnClear2"
-        app:layout_constraintTop_toBottomOf="@+id/btnDeleteSchedule" />
+        app:layout_constraintTop_toBottomOf="@+id/btnDeleteSchedule"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btnDeleteSchedule"
@@ -167,10 +168,10 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/btnSave2"
         app:layout_constraintTop_toBottomOf="@+id/tvScheduleSetting"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.007" />
 
     <EditText
         android:id="@+id/txtScheduleName"
@@ -207,12 +208,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/radioGroup"
-        app:layout_constraintTop_toBottomOf="@+id/btnSave2" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSave2"
+        app:layout_constraintVertical_bias="0.052" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="134dp"
-        android:layout_height="121dp"
+        android:layout_width="98dp"
+        android:layout_height="111dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="572dp"
         android:layout_marginEnd="24dp"
@@ -222,7 +224,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.8">
 
         <RadioButton
             android:id="@+id/rbWarm"
@@ -258,17 +260,17 @@
         android:id="@+id/btnCookSchedule"
         android:layout_width="174dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="182dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="55dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/colorPrimary"
         android:text="Cook"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/radioGroup"
         app:layout_constraintTop_toBottomOf="@+id/btnBack2"
         app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>
