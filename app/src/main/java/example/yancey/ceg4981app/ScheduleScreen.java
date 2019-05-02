@@ -23,7 +23,6 @@ public class ScheduleScreen extends AppCompatActivity {
         setContentView(R.layout.schedule_screen);
 
         Button btnAddSchedule = findViewById(R.id.btnAddSchedule);
-        Button btnRefreshSchedule = findViewById(R.id.btnRefreshSchedule);
         final Intent intent = new Intent(this, AddScheduleScreen.class);
         LinearLayout layout = findViewById(R.id.layoutSchedule);
 
@@ -44,13 +43,6 @@ public class ScheduleScreen extends AppCompatActivity {
                 b.putInt("key", 0);
                 intent.putExtras(b);
                 startActivity(intent);
-            }
-        });
-
-        btnRefreshSchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //refresh
             }
         });
 

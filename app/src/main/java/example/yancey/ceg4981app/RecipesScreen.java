@@ -21,7 +21,6 @@ public class RecipesScreen extends AppCompatActivity {
         setContentView(R.layout.recipes_screen);
 
         Button btnAddRecipe = findViewById(R.id.btnAddRecipe);
-        Button btnRefreshRecipe = findViewById(R.id.btnRefreshRecipe);
         LinearLayout layout = findViewById(R.id.layout);
         final Intent intent = new Intent(this, AddRecipeScreen.class);
 
@@ -40,14 +39,6 @@ public class RecipesScreen extends AppCompatActivity {
                 b.putInt("key", 0);
                 intent.putExtras(b);
                 startActivity(intent);
-            }
-        });
-
-       btnRefreshRecipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                //refresh
             }
         });
 
